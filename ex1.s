@@ -108,7 +108,7 @@ _reset:
 	str r3, [r0, GPIO_CTRL]
 
 // Set LED's to light
-	ldr r5, =0x00000000
+	ldr r5, =0x55555555
 	str r5, [r0, #GPIO_MODEH]
 
 // Set up buttons for pushing
@@ -119,10 +119,21 @@ _reset:
 	ldr r6, =0xff
 	str r6, [r1, #GPIO_DOUT]
 
+	
+
+
 //
 
-	str r1, [r5, #GPIO_DIN]
+push_button:
+
+
+	ldr r7, [r1, #GPIO_DIN]
+	lsl r7, #8
+	str r7, [r0, #GPIO_DOUT]
+
+	b push_button
 	
+
 
 	
 	
