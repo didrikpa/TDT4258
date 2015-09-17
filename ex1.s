@@ -119,34 +119,25 @@ _reset:
 	ldr r6, =0xff
 	str r6, [r1, #GPIO_DOUT]
 
-	
+// enable GPIO Interrupts
+	ldr r9, =GPIO_BASE
+	ldr r8, =0x22222222
+	str r8, [r9, #GPIO_EXTIPSELL]
 
+	ldr r10, =0xff
+	str r10, [r9, #GPIO_EXTIFALL]
 
-//
+	str r10, [r9, #GPIO_EXTIRISE]
 
-push_button:
+	str r10, [r9, #GPIO_IEN]
 
+	ldr r10, =0x802
+	ldr r11, =ISER0
+	str r10, [r11]	
 
-	ldr r7, [r1, #GPIO_DIN]
-	lsl r7, #8
-	str r7, [r0, #GPIO_DOUT]
-
-	b push_button
-	
-
-
-	
-	
-
-
-
+	    
 	      
-	     
-	
-	      
-	      
-	      
-	   
+	b .   
 
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -158,8 +149,15 @@ push_button:
 	
         .thumb_func
 gpio_handler:  
+	ldr r9, =GPIO_BASE
+	ldr r11, [r9, #GPIO_IF]
+	str r11, [r9, #GPIO_IFC]
 
-	      b .  // do nothing
+	ldr r7, [r1, #GPIO_DIN]
+	lsl r7, #8
+	str r7, [r0, #GPIO_DOUT]
+
+	bx lr
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
