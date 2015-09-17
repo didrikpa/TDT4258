@@ -135,7 +135,12 @@ _reset:
 	ldr r11, =ISER0
 	str r10, [r11]	
 
-	    
+// Goes to sleep mode
+
+	ldr r10, =SCR
+	ldr r8, =6  
+	str r8, [r10]
+	wfi
 	      
 	b .   
 
