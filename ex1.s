@@ -87,6 +87,7 @@ _reset:
 
 	//Load CMU base address.
 	ldr r1, =CMU_BASE
+	
 
 	//Load current value of HFPERCLKEN0
 	ldr r2,[r1, #CMU_HFPERCLKEN0]
@@ -102,34 +103,38 @@ _reset:
 // Set up port A and port C
 	ldr r0, =GPIO_PA_BASE
 	ldr r1, =GPIO_PC_BASE
+	
+	port_a .req r0
+	port_c .req r1
 
 // Set high drive strength for LED
 	mov r3, #0x2
-	str r3, [r0, GPIO_CTRL]
+	str r3, [port_a, GPIO_CTRL]
 
-// Set LED's to light
+// Set LEDs to output.
 	ldr r5, =0x55555555
-	str r5, [r0, #GPIO_MODEH]
+	str r5, [port_a, #GPIO_MODEH]
 
-// Set up buttons for pushing
+// Set up buttons for input
 	ldr r4, =0x33333333
-	str r4, [r1, #GPIO_MODEL]
+	str r4, [port_c, #GPIO_MODEL]
 	
-//
+// Enable internal pull-up
 	ldr r6, =0xff
-	str r6, [r1, #GPIO_DOUT]
+	str r6, [port_c, #GPIO_DOUT]
 
 // enable GPIO Interrupts
 	ldr r9, =GPIO_BASE
+	gpiobase .req r9
 	ldr r8, =0x22222222
-	str r8, [r9, #GPIO_EXTIPSELL]
+	str r8, [gpiobase, #GPIO_EXTIPSELL]
 
 	ldr r10, =0xff
-	str r10, [r9, #GPIO_EXTIFALL]
+	str r10, [gpiobase, #GPIO_EXTIFALL]
 
-	str r10, [r9, #GPIO_EXTIRISE]
+	str r10, [gpiobase, #GPIO_EXTIRISE]
 
-	str r10, [r9, #GPIO_IEN]
+	str r10, [gpiobase, #GPIO_IEN]
 
 	ldr r10, =0x802
 	ldr r11, =ISER0
@@ -154,13 +159,12 @@ _reset:
 	
         .thumb_func
 gpio_handler:  
-	ldr r9, =GPIO_BASE
-	ldr r11, [r9, #GPIO_IF]
-	str r11, [r9, #GPIO_IFC]
+	ldr r11, [gpiobase, #GPIO_IF]
+	str r11, [gpiobase, #GPIO_IFC]
 
-	ldr r7, [r1, #GPIO_DIN]
+	ldr r7, [port_c, #GPIO_DIN]
 	lsl r7, #8
-	str r7, [r0, #GPIO_DOUT]
+	str r7, [port_a, #GPIO_DOUT]
 
 	bx lr
 	
