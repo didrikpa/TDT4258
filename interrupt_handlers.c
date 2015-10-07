@@ -12,9 +12,9 @@ double y = 1000/44100;
 
 int x = 0;
 
-uint16_t z = 0x999;
+uint16_t z = 0x555;
 
-uint16_t n = 0x00f;
+uint16_t n = 0x111;
 
 /* TIMER1 interrupt handler */
 
@@ -24,19 +24,35 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 
 	*TIMER1_IFC = 0x1;
 
-	n = n*n*n;
+	n= n*n*n;
 
 	x+=1;
 
 	if(x<=22){
 
-		z += n;
+		if(x<=11){
+
+			
+
+			z = z+n*n;
+
+		}
+
+		z = z+n;
 
 	}
 
 	else if(x<=44){
 
-		z -= n;
+		if (x<33)
+
+		{
+
+			//z = z+n*n;
+
+		}
+
+		z = z-n;
 
 	}
 
@@ -56,31 +72,9 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 
 	*/
 
-/*
 
-	if(x<=22){
-
-		z = SOMETHING
-
-	}
-
-	else if(x>22 && < 44){
-
-		z = SOMETHING
-
-	}
-
-	else{
-
-		x=0
-
-		z = SOMETHING
-
-	}
 
 	
-
-*/
 
 	*DAC0_CH0CTRL = z;
 
