@@ -48,3 +48,24 @@ void setupDAC()
 
 }
 
+
+
+//Disables DAC to save power. 
+
+void dacSleep(){
+
+  *DAC0_CH0CTRL = 0x0;
+
+  *DAC0_CH1CTRL = 0x0;
+
+}
+
+
+
+void dacWake(){
+
+  *DAC0_CH0CTRL = 0x1;
+
+  *DAC0_CH1CTRL = 0x1;
+
+}
