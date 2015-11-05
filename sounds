@@ -1,0 +1,467 @@
+#include <stdint.h>
+
+#include <stdbool.h>
+
+
+
+#include "efm32gg.h"
+
+
+
+uint16_t sound1();
+
+uint16_t sound2();
+
+uint16_t sound3();
+
+uint16_t sound4();
+
+void resetCounter();
+
+
+
+//Numbers of samples in every sound.
+
+int sound1Length = 25000;
+
+int sound2Length = 80000;
+
+int sound3Length = 30000;
+
+int sound4Length = 25000;
+
+
+
+int freq1 = 20;
+
+int freq4 = 250;
+
+
+
+int m = 0;
+
+int x = 0;
+
+int k = 0;
+
+
+
+uint16_t y = 0x888;
+
+uint16_t z = 0;
+
+uint16_t n = 0x0ff;
+
+
+
+// Resets all variables uset to make the sounds.
+
+void resetCounter(){
+
+	m=0;
+
+	k=0;
+
+	freq1 = 20;
+
+	freq4 = 250;
+
+}
+
+
+
+uint16_t sound4(){
+
+	if(k<=sound4Length){
+
+		if(m<=25000){
+
+			m+=1;
+
+			x+=1;
+
+			if(m%500==0){
+
+				freq1+=10; 
+
+			}
+
+			if(x<=freq1){
+
+				z = y+n;
+
+			}
+
+			else if(x<=freq1*2){
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else{
+
+		 	m=0;
+
+		}
+
+		k++;
+
+	}
+
+	else{
+
+		timerSleep();
+
+		dacSleep();
+
+	} 
+
+	return z;
+
+}
+
+
+
+
+
+uint16_t sound3(){
+
+	if(k<=sound3Length){
+
+		if(m<=7500){
+
+			m+=1;
+
+			x+=1;
+
+			if(x<=40){
+
+				z = y+n;
+
+			}
+
+			else if(x<=80){
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>7500 && m<=15000){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=30){
+
+				z = y+n;
+
+			}
+
+			else if(x<=60){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>15000 && m<=22500){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=20){
+
+				z = y+n;
+
+			}
+
+			else if(x<=40){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>22500 && m<=30000){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=15){
+
+				z = y+n;
+
+			}
+
+			else if(x<=30){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else{
+
+			m=0;
+
+		}
+
+	k++;
+
+	}
+
+	else{
+
+		timerSleep();
+
+		dacSleep();
+
+	}
+
+	return z;
+
+}
+
+
+
+
+
+
+
+
+
+uint16_t sound2(){
+
+	//(*GPIO_PA_DOUT)++;
+
+	if(k<=sound2Length){
+
+		if(m<=20000){
+
+			m+=1;
+
+			x+=1;
+
+			if(x<=50){
+
+				z = y+n;
+
+			}
+
+			else if(x<=100){
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>20000 && m<=40000){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=75){
+
+				z = y+n;
+
+			}
+
+			else if(x<=150){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>40000 && m<=60000){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=80){
+
+				z = y+n;
+
+			}
+
+			else if(x<=160){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else if(m>60000 && m<=80000){
+
+				m+=1;
+
+				x+=1;
+
+			if(x<=100){
+
+				z = y+n;
+
+			}
+
+			else if(x<=200){ 
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else{
+
+			m=0;
+
+		}
+
+		k++;
+
+	}
+
+	else{
+
+		timerSleep();
+
+		dacSleep();
+
+	}
+
+	return z;
+
+
+
+}
+
+
+
+
+
+uint16_t sound1(){
+
+	if(k<=sound1Length){
+
+		if(m<=25000){
+
+			m+=1;
+
+			x+=1;
+
+			if(m%1000==0){
+
+				freq1+=5; 
+
+			}
+
+			if(x<=freq1){
+
+				z = y+n;
+
+			}
+
+			else if(x<=freq1*2){
+
+				z = y-n;
+
+			}
+
+			else{
+
+				x=0;
+
+			}
+
+		}
+
+		else{
+
+		 	m=0;
+
+		}
+
+		k++;
+
+	}
+
+	else{
+
+		timerSleep();
+
+		dacSleep();
+
+	} 
+
+	return z;
+
+}
