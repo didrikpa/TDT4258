@@ -28,10 +28,6 @@ void setupTimer(uint16_t period)
 
 *TIMER1_IEN = 0x1;
 
-//Enable timer interrupts
-
-*ISER0 |= 1 <<12;
-
 //Start timer
 
 *TIMER1_CMD = 0x1;
@@ -55,6 +51,26 @@ void setupTimer(uint16_t period)
     This will cause a timer interrupt to be generated every (period) cycles. Remember to configure the NVIC as well, otherwise the interrupt handler will not be invoked.
 
   */  
+
+}
+
+
+
+//Disables timer to save power
+
+void timerSleep(){
+
+	*TIMER1_IEN = 0x0;
+
+}
+
+
+
+//Reinitiates the timer
+
+void timerWake(){
+
+	*TIMER1_IEN = 0x1;
 
 }
 
